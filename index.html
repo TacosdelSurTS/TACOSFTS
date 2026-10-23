@@ -101,6 +101,30 @@
 
         :focus-visible { outline: 3px solid #EAB308; outline-offset: 3px; border-radius: 6px; }
 
+        /* Respuesta táctil al presionar */
+        .press { transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), background-color 200ms, border-color 200ms, color 200ms; }
+        .press:active { transform: scale(0.97); }
+
+        /* Vidrio con borde de refracción */
+        .glass { box-shadow: inset 0 1px 0 rgba(251, 243, 234, 0.08), 0 18px 40px -20px rgba(11, 6, 5, 0.9); }
+
+        /* Precios alineados */
+        .price { font-variant-numeric: tabular-nums; }
+
+        /* Punto de "abierto" que respira */
+        .status-dot { position: relative; }
+        .status-dot.is-open::after {
+            content: ""; position: absolute; inset: 0; border-radius: 9999px;
+            background: currentColor; color: #4ADE80;
+            animation: breathe 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+        @keyframes breathe { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(3); opacity: 0; } }
+
+        /* Banda de platillos en movimiento */
+        .marquee { display: flex; width: max-content; animation: marquee 38s linear infinite; }
+        .marquee-wrap:hover .marquee { animation-play-state: paused; }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+
         /* Estado inicial de lo que Motion revela; solo aplica si Motion cargó (html.js-motion) */
         html.js-motion .reveal,
         html.js-motion #menu-panel:not(.is-shown) > *,
@@ -167,31 +191,31 @@
                 <p class="reveal inline-flex items-center gap-2 text-gold font-bold tracking-[0.2em] uppercase text-xs md:text-sm mb-5">
                     <span class="w-8 h-px bg-gold"></span> Taquería familiar · San Mateo Atenco
                 </p>
-                <h1 class="reveal font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.95] max-w-4xl">
+                <h1 class="reveal font-display font-black text-5xl sm:text-6xl md:text-7xl leading-[0.95] tracking-tight max-w-3xl">
                     El sabor auténtico <span class="text-primary">del pastor</span>
                 </h1>
                 <p class="reveal mt-6 text-lg md:text-xl text-muted max-w-xl">
                     Más que tacos, una tradición familiar de corazón. Trompo recién cortado, tortilla caliente y salsas de la casa.
                 </p>
                 <div class="reveal mt-8 flex flex-col sm:flex-row gap-3">
-                    <a href="#menu" class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold text-lg px-7 py-4 rounded-full transition-colors duration-200">
+                    <a href="#menu" class="press inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold text-lg px-7 py-4 rounded-full">
                         Ver el menú <i class="fa-solid fa-arrow-down text-base" aria-hidden="true"></i>
                     </a>
-                    <a href="https://wa.me/5217227618491?text=Hola!%20Me%20interesa%20el%20servicio%20a%20domicilio." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 border-2 border-cream/30 hover:border-gold hover:text-gold text-cream font-bold text-lg px-7 py-4 rounded-full transition-colors duration-200">
+                    <a href="https://wa.me/5217227618491?text=Hola!%20Me%20interesa%20el%20servicio%20a%20domicilio." target="_blank" rel="noopener noreferrer" class="press inline-flex items-center justify-center gap-2 border-2 border-cream/30 hover:border-gold hover:text-gold text-cream font-bold text-lg px-7 py-4 rounded-full">
                         <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Pedir a domicilio
                     </a>
                 </div>
 
                 <!-- Estado en vivo de sucursales -->
                 <ul class="reveal mt-10 grid sm:grid-cols-2 gap-3 max-w-2xl" aria-label="Estado de las sucursales">
-                    <li class="flex items-center gap-3 bg-surface/80 backdrop-blur border border-line rounded-2xl px-4 py-3">
+                    <li class="glass flex items-center gap-3 bg-surface/80 backdrop-blur border border-line rounded-2xl px-4 py-3">
                         <span class="status-dot w-2.5 h-2.5 rounded-full bg-muted" data-branch="guadalupe" aria-hidden="true"></span>
                         <div class="text-sm">
                             <p class="font-bold text-cream">Guadalupe</p>
                             <p class="status-text text-muted" data-branch="guadalupe">Consultando horario…</p>
                         </div>
                     </li>
-                    <li class="flex items-center gap-3 bg-surface/80 backdrop-blur border border-line rounded-2xl px-4 py-3">
+                    <li class="glass flex items-center gap-3 bg-surface/80 backdrop-blur border border-line rounded-2xl px-4 py-3">
                         <span class="status-dot w-2.5 h-2.5 rounded-full bg-muted" data-branch="san-pedro" aria-hidden="true"></span>
                         <div class="text-sm">
                             <p class="font-bold text-cream">San Pedro</p>
@@ -203,6 +227,30 @@
         </section>
 
         <div class="picado" aria-hidden="true"></div>
+
+        <!-- Banda de platillos -->
+        <div class="marquee-wrap overflow-hidden border-b border-line bg-ink/70 backdrop-blur py-4" aria-hidden="true">
+            <div class="marquee font-display font-bold text-2xl md:text-3xl text-cream/90">
+                <div class="flex shrink-0 items-center gap-8 pr-8">
+                    <span>Al Pastor</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Suizos</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Gringas</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Costras</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Volcanes</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Alambres</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span class="text-gold">Carajillos</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                </div>
+                <div class="flex shrink-0 items-center gap-8 pr-8">
+                    <span>Al Pastor</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Suizos</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Gringas</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Costras</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Volcanes</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span>Alambres</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                    <span class="text-gold">Carajillos</span><i class="fa-solid fa-fire-flame-curved text-primary text-lg"></i>
+                </div>
+            </div>
+        </div>
 
         <!-- SUCURSALES -->
         <section id="sucursales" class="py-20 md:py-28 grain">
@@ -294,7 +342,7 @@
                         <span class="inline-block text-xs font-bold uppercase tracking-widest bg-ink/30 text-white px-3 py-1 rounded-full">La especialidad de la casa</span>
                         <h3 class="mt-4 font-display font-black text-4xl md:text-5xl text-white">Taco al Pastor</h3>
                         <p class="mt-3 text-white/90 text-lg max-w-md">Carne de cerdo marinada, servida con piña, cilantro y cebolla. Directo del trompo a tu mesa.</p>
-                        <p class="mt-5 font-display font-bold text-5xl text-white">$20</p>
+                        <p class="price mt-5 font-display font-bold text-5xl text-white">$20</p>
                     </div>
                     <img src="https://res.cloudinary.com/dcusstbid/image/upload/e_background_removal/f_png/v1752271561/photo_2023-12-18_04-57-42-removebg-preview_2_spelgc.png" alt="Orden de tacos al pastor de Tacos del Sur" loading="lazy" class="w-full max-w-sm mx-auto drop-shadow-2xl">
                 </div>
@@ -355,6 +403,9 @@
             <div>
                 <p class="font-display font-bold text-2xl">Tacos del Sur</p>
                 <p class="mt-2 text-muted">Tacos al pastor con tradición familiar en San Mateo Atenco.</p>
+                <a href="tel:+527227618491" class="mt-4 inline-flex items-center gap-2 font-bold hover:text-gold transition-colors duration-200">
+                    <i class="fa-solid fa-phone text-primary" aria-hidden="true"></i> Pedidos: 722 761 8491
+                </a>
             </div>
             <div>
                 <p class="font-bold mb-3">Síguenos</p>
@@ -374,12 +425,12 @@
     <!-- Botón flotante WhatsApp -->
     <a href="https://wa.me/5217227618491?text=Hola!%20Me%20interesa%20el%20servicio%20a%20domicilio." target="_blank" rel="noopener noreferrer"
        aria-label="Pedir a domicilio por WhatsApp"
-       class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 grid place-items-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#25D366] hover:bg-[#1EBE5A] text-white text-3xl shadow-lg shadow-black/40 transition-colors duration-200">
+       class="press fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 grid place-items-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#25D366] hover:bg-[#1EBE5A] text-white text-3xl shadow-[0_14px_30px_-10px_rgba(11,6,5,0.9)]">
         <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
     </a>
 
     <!-- Lightbox -->
-    <div id="lightbox" class="hidden fixed inset-0 z-[70] bg-black/90 items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+    <div id="lightbox" class="hidden fixed inset-0 z-[70] bg-ink/95 backdrop-blur-sm items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
         <button id="lb-close" type="button" aria-label="Cerrar" class="absolute top-4 right-4 grid place-items-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-xl cursor-pointer transition-colors duration-200"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
         <button id="lb-prev" type="button" aria-label="Imagen anterior" class="absolute left-3 md:left-6 grid place-items-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer transition-colors duration-200"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
         <figure id="lb-figure" class="max-w-5xl max-h-full flex flex-col items-center">
@@ -412,7 +463,7 @@
             navShell.classList.toggle('bg-ink/90', solid);
             navShell.classList.toggle('backdrop-blur', solid);
             navShell.classList.toggle('border-line', solid);
-            navShell.classList.toggle('shadow-lg', solid);
+            navShell.classList.toggle('glass', solid);
         };
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
@@ -483,6 +534,7 @@
                 const s = branchStatus(b);
                 document.querySelectorAll(`.status-text[data-branch="${b}"]`).forEach(el => el.textContent = s.text);
                 document.querySelectorAll(`.status-dot[data-branch="${b}"]`).forEach(el => {
+                    el.classList.toggle('is-open', s.open);
                     el.classList.toggle('bg-green-400', s.open);
                     el.classList.toggle('bg-salsa', !s.open);
                     el.classList.remove('bg-muted');
@@ -560,7 +612,7 @@
                             <div class="flex items-baseline">
                                 <span class="font-bold text-lg">${i.name}</span>
                                 <span class="leader" aria-hidden="true"></span>
-                                <span class="font-display font-bold text-xl text-gold whitespace-nowrap">${priceLabel(i.price)}</span>
+                                <span class="price font-display font-bold text-xl text-gold whitespace-nowrap">${priceLabel(i.price)}</span>
                             </div>
                             ${i.description ? `<p class="text-muted text-sm mt-1">${i.description}</p>` : ''}
                         </li>`).join('')}
@@ -656,7 +708,7 @@
         gallery.innerHTML = PHOTOS.map((p, i) => `
             <button type="button" data-index="${i}" class="group relative overflow-hidden rounded-2xl bg-raised cursor-pointer ${p.span}" aria-label="Ampliar: ${p.alt}">
                 <img src="${url(p.src, 800)}" alt="${p.alt}" loading="lazy" class="w-full h-full object-cover transition-opacity duration-200 group-hover:opacity-80">
-                <span class="absolute inset-x-0 bottom-0 p-3 text-left text-sm font-bold bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200">${p.alt}</span>
+                <span class="absolute inset-x-0 bottom-0 p-3 text-left text-sm font-bold bg-gradient-to-t from-ink/90 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200">${p.alt}</span>
             </button>`).join('');
 
         const lb = document.getElementById('lightbox');
@@ -745,7 +797,19 @@
         document.getElementById('lb-prev').addEventListener('click', () => step(-1));
         document.getElementById('lb-next').addEventListener('click', () => step(1));
         lb.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+        // Mantiene el foco del teclado dentro del diálogo abierto
+        const trapTab = (e, root, extra = []) => {
+            const items = [...extra, ...root.querySelectorAll('a[href], button:not([disabled])')];
+            const first = items[0], last = items[items.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        };
         document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                if (!lb.classList.contains('hidden')) trapTab(e, lb);
+                else if (menuOpen) trapTab(e, mobileMenu, [menuBtn]);
+                return;
+            }
             if (!lb.classList.contains('hidden')) {
                 if (e.key === 'Escape') closeLb();
                 if (e.key === 'ArrowLeft') step(-1);
