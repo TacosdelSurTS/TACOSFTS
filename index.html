@@ -137,6 +137,46 @@
             *, *::before, *::after { animation: none !important; transition-duration: 0ms !important; }
         }
 
+        /* Galería tipo selector: el panel activo se expande; en teléfono en columna, en escritorio en fila */
+        .sel { display: flex; flex-direction: column; gap: 6px; height: 680px; }
+        .sel-opt {
+            position: relative; flex: 1 1 0%; min-width: 0; min-height: 0; overflow: hidden;
+            border-radius: 1rem; border: 2px solid #3D2A23; background: #2A1B17; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: flex-grow 700ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms, box-shadow 700ms;
+        }
+        .sel-opt.is-active { flex-grow: 6; border-color: #EAB308; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+        .sel-opt img {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+            transform: scale(1.2); transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms;
+        }
+        .sel-opt.is-active img { transform: scale(1); }
+        .sel-opt:not(.is-active):hover img { opacity: 0.8; }
+        .sel-shade {
+            position: absolute; inset-inline: 0; bottom: 0; height: 60%; pointer-events: none;
+            background: linear-gradient(to top, rgba(11,6,5,0.92), transparent);
+            opacity: 0; transition: opacity 700ms;
+        }
+        .sel-opt.is-active .sel-shade { opacity: 1; }
+        .sel-label { position: absolute; left: 0.5rem; right: 0.5rem; bottom: 0.4rem; display: flex; align-items: center; gap: 0.75rem; pointer-events: none; }
+        .sel-icon {
+            flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9999px;
+            background: rgba(20,12,10,0.85); backdrop-filter: blur(10px); border: 2px solid #3D2A23; color: #EAB308; font-size: 0.85rem;
+        }
+        .sel-info, .sel-zoom { opacity: 0; transform: translateX(25px); transition: opacity 700ms, transform 700ms cubic-bezier(0.16, 1, 0.3, 1); }
+        .sel-info { min-width: 0; white-space: nowrap; text-align: left; }
+        .sel-opt.is-active .sel-info, .sel-opt.is-active .sel-zoom { opacity: 1; transform: none; }
+        .sel-zoom {
+            position: absolute; top: 0.75rem; right: 0.75rem; display: grid; place-items: center; width: 36px; height: 36px;
+            border-radius: 9999px; background: rgba(20,12,10,0.7); color: #FBF3EA; font-size: 0.85rem; pointer-events: none;
+        }
+        @media (min-width: 768px) {
+            .sel { flex-direction: row; height: 480px; gap: 8px; }
+            .sel-opt.is-active { flex-grow: 7; }
+            .sel-label { left: 1rem; right: 1rem; bottom: 1.25rem; }
+            .sel-icon { width: 44px; height: 44px; font-size: 1.05rem; }
+        }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { scrollbar-width: none; }
     </style>
@@ -391,9 +431,9 @@
                 <div class="reveal max-w-2xl mb-6 md:mb-12">
                     <p class="text-gold font-bold tracking-[0.2em] uppercase text-xs md:text-sm mb-2 md:mb-3">Galería</p>
                     <h2 class="font-display font-bold text-3xl sm:text-4xl md:text-5xl">Un vistazo a la taquería</h2>
-                    <p class="mt-2 md:mt-4 text-muted md:text-lg">Nuestro ambiente y los platillos que te esperan.</p>
+                    <p class="mt-2 md:mt-4 text-muted md:text-lg">Toca una foto para descubrirla; tócala de nuevo para verla en grande.</p>
                 </div>
-                <div id="gallery" class="grid grid-cols-2 md:grid-cols-4 auto-rows-[130px] sm:auto-rows-[160px] md:auto-rows-[200px] gap-2 md:gap-4"></div>
+                <div id="gallery" class="sel"></div>
             </div>
         </section>
 
@@ -406,8 +446,8 @@
             <div>
                 <p class="font-display font-bold text-2xl">Tacos del Sur</p>
                 <p class="mt-2 text-muted">Tacos al pastor con tradición familiar en San Mateo Atenco.</p>
-                <a href="tel:+527227618491" class="mt-4 inline-flex items-center gap-2 font-bold hover:text-gold transition-colors duration-200">
-                    <i class="fa-solid fa-phone text-primary" aria-hidden="true"></i> Pedidos: 722 761 8491
+                <a href="tel:+527227894631" class="mt-4 inline-flex items-center gap-2 font-bold hover:text-gold transition-colors duration-200">
+                    <i class="fa-solid fa-phone text-primary" aria-hidden="true"></i> Pedidos: 722 789 4631
                 </a>
             </div>
             <div>
@@ -425,12 +465,24 @@
         </div>
     </footer>
 
-    <!-- Botón flotante WhatsApp -->
-    <a href="https://wa.me/5217227618491?text=Hola!%20Me%20interesa%20el%20servicio%20a%20domicilio." target="_blank" rel="noopener noreferrer"
-       aria-label="Pedir a domicilio por WhatsApp"
-       class="press fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 grid place-items-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#25D366] hover:bg-[#1EBE5A] text-white text-3xl shadow-[0_14px_30px_-10px_rgba(11,6,5,0.9)]">
-        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
-    </a>
+    <!-- Botones flotantes: redes sociales arriba, WhatsApp (pedido) abajo -->
+    <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 flex flex-col items-center gap-3">
+        <a href="https://www.instagram.com/tacos.del.sur_fts?igsh=dms1dGZzOW0zbWhi" target="_blank" rel="noopener noreferrer"
+           aria-label="Síguenos en Instagram"
+           class="press grid place-items-center w-11 h-11 md:w-12 md:h-12 rounded-full bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] hover:brightness-110 text-white text-xl md:text-2xl shadow-[0_14px_30px_-10px_rgba(11,6,5,0.9)]">
+            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a href="https://www.facebook.com/share/19bHuXexvV/?mibextid=qi2Omg" target="_blank" rel="noopener noreferrer"
+           aria-label="Síguenos en Facebook"
+           class="press grid place-items-center w-11 h-11 md:w-12 md:h-12 rounded-full bg-[#1877F2] hover:bg-[#0F65D8] text-white text-xl md:text-2xl shadow-[0_14px_30px_-10px_rgba(11,6,5,0.9)]">
+            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        </a>
+        <a href="https://wa.me/5217227618491?text=Hola!%20Me%20interesa%20el%20servicio%20a%20domicilio." target="_blank" rel="noopener noreferrer"
+           aria-label="Pedir a domicilio por WhatsApp"
+           class="press grid place-items-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#25D366] hover:bg-[#1EBE5A] text-white text-3xl shadow-[0_14px_30px_-10px_rgba(11,6,5,0.9)]">
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        </a>
+    </div>
 
     <!-- Lightbox -->
     <div id="lightbox" class="hidden fixed inset-0 z-[70] bg-ink/95 backdrop-blur-sm items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
@@ -698,22 +750,37 @@
         // ---------- Galería + lightbox ----------
         const CDN = 'https://res.cloudinary.com/dcusstbid/image/upload/';
         const PHOTOS = [
-            { src: 'v1752209724/20250501_225004_geglpc.jpg', alt: 'Trompo de carne al pastor', span: 'col-span-2 row-span-2' },
-            { src: 'v1752206189/20250429_000945_nhmjbb.jpg', alt: 'Platillo recién servido', span: 'row-span-2' },
-            { src: 'v1752207865/20250501_231626_qlhfrr.jpg', alt: 'Bebida de la casa', span: '' },
-            { src: 'v1752209568/20250710_223931_zmmurb.jpg', alt: 'Interior de la taquería', span: '' },
-            { src: 'c_crop,ar_3:4/v1752212324/20250501_230353_bijuhm.jpg', alt: 'Orden de tacos', span: 'row-span-2' },
-            { src: 'v1752209568/20250617_204238_admndu.jpg', alt: 'Detalle decorativo de la taquería', span: '' },
-            { src: 'v1752211721/as_oeto4e.jpg', alt: 'Clientes disfrutando en la taquería', span: 'col-span-2' },
-            { src: 'v1752206165/IMG-20250422-WA0025_pq3xko.jpg', alt: 'Especialidad de la casa', span: '' }
+            { src: 'v1752209724/20250501_225004_geglpc.jpg', alt: 'Trompo de carne al pastor', sub: 'Girando al carbón toda la noche', icon: 'fa-fire-flame-curved' },
+            { src: 'v1752206189/20250429_000945_nhmjbb.jpg', alt: 'Platillo recién servido', sub: 'Directo de la plancha a tu mesa', icon: 'fa-utensils' },
+            { src: 'v1752207865/20250501_231626_qlhfrr.jpg', alt: 'Bebida de la casa', sub: 'Para acompañar tus tacos', icon: 'fa-glass-water' },
+            { src: 'v1752209568/20250710_223931_zmmurb.jpg', alt: 'Interior de la taquería', sub: 'Un lugar para quedarse', icon: 'fa-store' },
+            { src: 'c_crop,ar_3:4/v1752212324/20250501_230353_bijuhm.jpg', alt: 'Orden de tacos', sub: 'Con piña, cebolla y cilantro', icon: 'fa-pepper-hot' },
+            { src: 'v1752209568/20250617_204238_admndu.jpg', alt: 'Detalle decorativo de la taquería', sub: 'Colores del sur', icon: 'fa-star' },
+            { src: 'v1752211721/as_oeto4e.jpg', alt: 'Clientes disfrutando en la taquería', sub: 'Familia, amigos y buen sabor', icon: 'fa-users' },
+            { src: 'v1752206165/IMG-20250422-WA0025_pq3xko.jpg', alt: 'Especialidad de la casa', sub: 'La favorita de nuestros clientes', icon: 'fa-crown' }
         ];
         const url = (src, w) => CDN + `f_auto,q_auto,w_${w}/` + src;
         const gallery = document.getElementById('gallery');
         gallery.innerHTML = PHOTOS.map((p, i) => `
-            <button type="button" data-index="${i}" class="group relative overflow-hidden rounded-2xl bg-raised cursor-pointer ${p.span}" aria-label="Ampliar: ${p.alt}">
-                <img src="${url(p.src, 800)}" alt="${p.alt}" loading="lazy" class="w-full h-full object-cover transition-opacity duration-200 group-hover:opacity-80">
-                <span class="absolute inset-x-0 bottom-0 p-3 text-left text-sm font-bold bg-gradient-to-t from-ink/90 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200">${p.alt}</span>
+            <button type="button" data-index="${i}" class="sel-opt${i === 0 ? ' is-active' : ''}" aria-label="${p.alt}">
+                <img src="${url(p.src, 1000)}" alt="${p.alt}" loading="lazy">
+                <span class="sel-shade" aria-hidden="true"></span>
+                <span class="sel-zoom" aria-hidden="true"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>
+                <span class="sel-label">
+                    <span class="sel-icon" aria-hidden="true"><i class="fa-solid ${p.icon}"></i></span>
+                    <span class="sel-info">
+                        <span class="block font-bold text-base md:text-lg truncate">${p.alt}</span>
+                        <span class="block text-sm md:text-base text-muted truncate">${p.sub}</span>
+                    </span>
+                </span>
             </button>`).join('');
+        let activePhoto = 0;
+        // Primer toque: expande el panel; segundo toque sobre el activo: abre el visor
+        const selectPhoto = (i) => {
+            gallery.children[activePhoto].classList.remove('is-active');
+            gallery.children[i].classList.add('is-active');
+            activePhoto = i;
+        };
 
         const lb = document.getElementById('lightbox');
         const lbImg = document.getElementById('lb-img');
@@ -795,7 +862,9 @@
         };
         gallery.addEventListener('click', (e) => {
             const btn = e.target.closest('button[data-index]');
-            if (btn) openLb(Number(btn.dataset.index));
+            if (!btn) return;
+            const i = Number(btn.dataset.index);
+            if (i === activePhoto) openLb(i); else selectPhoto(i);
         });
         document.getElementById('lb-close').addEventListener('click', closeLb);
         document.getElementById('lb-prev').addEventListener('click', () => step(-1));
@@ -843,7 +912,7 @@
                 M.animate(container.children, from, { ...SPRING, delay: M.stagger(0.06) });
             }, { amount: 0.1 });
             revealChildren(panel, { opacity: [0, 1], y: [24, 0] });
-            revealChildren(gallery, { opacity: [0, 1], scale: [0.92, 1] });
+            revealChildren(gallery, { opacity: [0, 1], x: [-60, 0] });
 
             // Portada: el contenido sube y se desvanece al salir, enlazando con Sucursales
             M.scroll(
