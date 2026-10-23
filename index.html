@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tacos del Sur · Tacos al Pastor en San Mateo Atenco</title>
+    <meta name="description" content="Tacos al pastor, suizos, gringas, costras y volcanes. Dos sucursales en San Mateo Atenco: Guadalupe y San Pedro. Servicio a domicilio y eventos.">
+    <meta name="theme-color" content="#140C0A">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: '#140C0A',        // fondo principal (carbón cálido)
+                        surface: '#1F1411',    // tarjetas
+                        raised: '#2A1B17',     // tarjetas elevadas / hover
+                        line: '#3D2A23',       // bordes
+                        cream: '#FBF3EA',      // texto principal
+                        muted: '#CDBBAE',      // texto secundario
+                        primary: '#DC2626',    // rojo pastor
+                        'primary-dark': '#B91C1C',
+                        gold: '#EAB308',       // precios y acentos
+                        salsa: '#F87171'
+                    },
+                    fontFamily: {
+                        display: ['"Playfair Display SC"', 'serif'],
+                        sans: ['Karla', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Playfair Display SC (títulos) + Karla (texto) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700;800&family=Playfair+Display+SC:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome (iconos SVG consistentes y logos oficiales de redes) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Oculta lo que Motion va a revelar antes del primer pintado (se revierte si Motion no carga) -->
+    <script>
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js-motion');
+    </script>
+
+    <!-- Fondo animado DataRain (compilado desde ../app con `npm run build:embed`) -->
+    <link rel="stylesheet" href="assets/data-rain.css">
+
+    <style>
+        body { background-color: #140C0A; color: #FBF3EA; }
+
+        /* Paleta de DataRain: brasas sobre carbón */
+        :root {
+            --dr-bg-0: #0B0605;
+            --dr-bg-1: #140C0A;
+            --dr-bg-2: #24130E;
+            --dr-core: #FFF1D6;
+            --dr-vignette: 0.55;
+            --dr-grain: 0.04;
+            --dr-bloom-opacity: 0.6;
+        }
+        /* Atenuado para que el texto siga siendo legible encima */
+        .tacos-rain { opacity: 0.7; }
+
+        /* Textura sutil de papel picado / grano */
+        .grain {
+            background-image: radial-gradient(rgba(234, 179, 8, 0.06) 1px, transparent 1px);
+            background-size: 22px 22px;
+        }
+
+        /* Foto semitransparente que se desvanece hacia abajo para dejar ver el fondo animado */
+        .hero-bg { isolation: isolate; }
+        .hero-bg::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(180deg, rgba(20,12,10,0.35) 0%, rgba(20,12,10,0.65) 60%),
+                url('https://res.cloudinary.com/dcusstbid/image/upload/f_auto,q_auto,w_1600/v1752207629/a_kzdqmu_c_pad_b_gen_fill_ar_9_16_wkkikd.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+            -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+            mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+        }
+
+        /* Línea punteada entre platillo y precio, estilo carta de taquería */
+        .leader { flex: 1; border-bottom: 2px dotted #3D2A23; margin: 0 .75rem; transform: translateY(-5px); min-width: 1rem; }
+
+        /* Franja decorativa tipo papel picado */
+        .picado {
+            height: 14px;
+            background:
+                radial-gradient(circle at 10px -4px, transparent 9px, #DC2626 10px) 0 0 / 20px 14px repeat-x;
+        }
+
+        :focus-visible { outline: 3px solid #EAB308; outline-offset: 3px; border-radius: 6px; }
+
+        /* Estado inicial de lo que Motion revela; solo aplica si Motion cargó (html.js-motion) */
+        html.js-motion .reveal,
+        html.js-motion #menu-panel:not(.is-shown) > *,
+        html.js-motion #gallery:not(.is-shown) > * { opacity: 0; }
+        html:not(.js-motion) #scroll-progress { display: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            #scroll-progress { display: none; }
+            *, *::before, *::after { animation: none !important; transition-duration: 0ms !important; }
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-sans antialiased leading-relaxed">
+
+    <div id="data-rain-bg"></div>
+    <div id="scroll-progress" class="fixed top-0 inset-x-0 h-1 z-[55] origin-left bg-gradient-to-r from-primary to-gold" style="transform: scaleX(0)" aria-hidden="true"></div>
+
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] bg-gold text-ink font-bold px-4 py-2 rounded-lg">Saltar al contenido</a>
+
+    <!-- Navegación flotante -->
+    <header id="header" class="fixed top-3 inset-x-3 md:top-4 md:inset-x-6 z-50">
+        <div id="nav-shell" class="max-w-6xl mx-auto flex items-center justify-between gap-4 rounded-2xl px-4 md:px-6 py-3 border border-transparent transition-colors duration-300">
+            <a href="#inicio" class="flex items-center gap-2 text-cream">
+                <span class="grid place-items-center w-9 h-9 rounded-full bg-primary text-white"><i class="fa-solid fa-fire-flame-curved" aria-hidden="true"></i></span>
+                <span class="font-display font-bold text-xl tracking-wide">Tacos del Sur</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-1" aria-label="Principal">
+                <a href="#sucursales" class="px-3 py-2 rounded-lg text-muted hover:text-cream hover:bg-white/5 transition-colors duration-200">Sucursales</a>
+                <a href="#menu" class="px-3 py-2 rounded-lg text-muted hover:text-cream hover:bg-white/5 transition-colors duration-200">Menú</a>
+                <a href="#servicios" class="px-3 py-2 rounded-lg text-muted hover:text-cream hover:bg-white/5 transition-colors duration-200">Servicios</a>
+                <a href="#galeria" class="px-3 py-2 rounded-lg text-muted hover:text-cream hover:bg-white/5 transition-colors duration-200">Galería</a>
+                <a href="https://wa.me/5217227618491?text=Hola!%20Quiero%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer" class="ml-2 inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-4 py-2 rounded-full transition-colors duration-200">
+                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Pedir ahora
+                </a>
+            </nav>
+            <button id="mobile-menu-button" type="button" class="md:hidden grid place-items-center w-11 h-11 rounded-xl text-cream hover:bg-white/10 transition-colors duration-200 cursor-pointer" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars text-xl" aria-hidden="true"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Menú móvil -->
+    <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-ink/95 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Navegación">
+        <nav class="flex flex-col items-center justify-center h-full gap-2 px-6" aria-label="Móvil">
+            <a href="#sucursales" class="mobile-nav-link w-full max-w-xs text-center text-2xl font-display py-3 rounded-xl hover:bg-white/5">Sucursales</a>
+            <a href="#menu" class="mobile-nav-link w-full max-w-xs text-center text-2xl font-display py-3 rounded-xl hover:bg-white/5">Menú</a>
+            <a href="#servicios" class="mobile-nav-link w-full max-w-xs text-center text-2xl font-display py-3 rounded-xl hover:bg-white/5">Servicios</a>
+            <a href="#galeria" class="mobile-nav-link w-full max-w-xs text-center text-2xl font-display py-3 rounded-xl hover:bg-white/5">Galería</a>
+            <a href="https://wa.me/5217227618491?text=Hola!%20Quiero%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer" class="mobile-nav-link mt-6 inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-full">
+                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Pedir por WhatsApp
+            </a>
+        </nav>
+    </div>
+
+    <main id="contenido" class="relative z-10">
+
+        <!-- HERO -->
+        <section id="inicio" class="hero-bg relative min-h-[100svh] flex items-end md:items-center">
+            <div id="hero-content" class="max-w-6xl mx-auto w-full px-4 md:px-6 pt-32 pb-16 md:py-0">
+                <p class="reveal inline-flex items-center gap-2 text-gold font-bold tracking-[0.2em] uppercase text-xs md:text-sm mb-5">
+                    <span class="w-8 h-px bg-gold"></span> Taquería familiar · San Mateo Atenco
+                </p>
+                <h1 class="reveal font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.95] max-w-4xl">
+                    El sabor auténtico <span class="text-primary">del pastor</span>
+                </h1>
+                <p class="reveal mt-6 text-lg md:text-xl text-muted max-w-xl">
+                    Más que tacos, una tradición familiar de corazón. Trompo recién cortado, tortilla caliente y salsas de la casa.
+                </p>
+                <div class="reveal mt-8 flex flex-col sm:flex-row gap-3">
+                    <a href="#menu" class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold text-lg px-7 py-4 rounded-full transition-colors duration-200">
+                        Ver el menú <i class="fa-solid fa-arrow-down text-base" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://wa.me/5217227618491?text=Hola!%20Me%20interesa%20el%20servicio%20a%20domicilio." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 border-2 border-cream/30 hover:border-gold hover:text-gold text-cream font-bold text-lg px-7 py-4 rounded-full transition-colors duration-200">
+                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Pedir a domicilio
+                    </a>
+                </div>
+
+                <!-- Estado en vivo de sucursales -->
+                <ul class="reveal mt-10 grid sm:grid-cols-2 gap-3 max-w-2xl" aria-label="Estado de las sucursales">
+                    <li class="flex items-center gap-3 bg-surface/80 backdrop-blur border border-line rounded-2xl px-4 py-3">
+                        <span class="status-dot w-2.5 h-2.5 rounded-full bg-muted" data-branch="guadalupe" aria-hidden="true"></span>
+                        <div class="text-sm">
+                            <p class="font-bold text-cream">Guadalupe</p>
+                            <p class="status-text text-muted" data-branch="guadalupe">Consultando horario…</p>
+                        </div>
+                    </li>
+                    <li class="flex items-center gap-3 bg-surface/80 backdrop-blur border border-line rounded-2xl px-4 py-3">
+                        <span class="status-dot w-2.5 h-2.5 rounded-full bg-muted" data-branch="san-pedro" aria-hidden="true"></span>
+                        <div class="text-sm">
+                            <p class="font-bold text-cream">San Pedro</p>
+                            <p class="status-text text-muted" data-branch="san-pedro">Consultando horario…</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="picado" aria-hidden="true"></div>
+
+        <!-- SUCURSALES -->
+        <section id="sucursales" class="py-20 md:py-28 grain">
+            <div class="max-w-6xl mx-auto px-4 md:px-6">
+                <div class="reveal max-w-2xl mb-12">
+                    <p class="text-gold font-bold tracking-[0.2em] uppercase text-sm mb-3">Visítanos</p>
+                    <h2 class="font-display font-bold text-4xl md:text-5xl">Dos sucursales, el mismo trompo</h2>
+                    <p class="mt-4 text-muted text-lg">Estamos listos para servirte los mejores tacos de la ciudad.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <!-- Guadalupe -->
+                    <article class="reveal flex flex-col bg-surface border border-line rounded-3xl overflow-hidden">
+                        <div class="aspect-[16/10] bg-raised">
+                            <iframe title="Mapa de la sucursal Guadalupe" class="w-full h-full" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3766.780543517329!2d-99.5390337!3d19.2483938!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cdf4c9d3a2aa31%3A0xbc88024f9de03425!2sTACOS%20DEL%20SUR!5e0!3m2!1ses!2smx!4v1751757277927!5m2!1ses!2smx"></iframe>
+                        </div>
+                        <div class="flex flex-col flex-1 p-6 md:p-8">
+                            <div class="flex items-start justify-between gap-4">
+                                <h3 class="font-display font-bold text-3xl">Guadalupe</h3>
+                                <span class="status-badge shrink-0 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-raised text-muted" data-branch="guadalupe">—</span>
+                            </div>
+                            <p class="mt-3 flex gap-3 text-muted"><i class="fa-solid fa-location-dot text-primary mt-1" aria-hidden="true"></i> Manzana 048, Guadalupe, 52107 San Mateo Atenco, Méx.</p>
+                            <dl class="mt-5 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-sm border-t border-line pt-5">
+                                <dt class="text-muted">Lun, Mar, Jue – Dom</dt><dd class="font-bold text-right">4:00 PM – 11:00 PM</dd>
+                                <dt class="text-muted">Miércoles</dt><dd class="font-bold text-right text-salsa">Cerrado</dd>
+                            </dl>
+                            <div class="mt-auto pt-6 flex flex-wrap gap-3">
+                                <a href="#menu" data-show-branch="guadalupe" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-5 py-3 rounded-full transition-colors duration-200">Ver menú Guadalupe</a>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Tacos+del+Sur+Guadalupe+San+Mateo+Atenco" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 border border-line hover:border-gold hover:text-gold font-bold px-5 py-3 rounded-full transition-colors duration-200">
+                                    <i class="fa-solid fa-diamond-turn-right" aria-hidden="true"></i> Cómo llegar
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- San Pedro -->
+                    <article class="reveal flex flex-col bg-surface border border-line rounded-3xl overflow-hidden">
+                        <div class="aspect-[16/10] bg-raised">
+                            <iframe title="Mapa de la sucursal San Pedro" class="w-full h-full" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d747.3098495872889!2d-99.5299259653274!3d19.273471107027568!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cdf5273ab3a24b%3A0x718f633fabb3a711!2sTACOS%20del%20SUR!5e0!3m2!1ses!2smx!4v1753152962664!5m2!1ses!2smx"></iframe>
+                        </div>
+                        <div class="flex flex-col flex-1 p-6 md:p-8">
+                            <div class="flex items-start justify-between gap-4">
+                                <h3 class="font-display font-bold text-3xl">San Pedro</h3>
+                                <span class="status-badge shrink-0 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-raised text-muted" data-branch="san-pedro">—</span>
+                            </div>
+                            <p class="mt-3 flex gap-3 text-muted"><i class="fa-solid fa-location-dot text-primary mt-1" aria-hidden="true"></i> Av. Lic. Benito Juárez 418, San Juan, 52104 San Mateo Atenco, Méx.</p>
+                            <dl class="mt-5 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-sm border-t border-line pt-5">
+                                <dt class="text-muted">Domingo – Jueves</dt><dd class="font-bold text-right">5:30 PM – 1:30 AM</dd>
+                                <dt class="text-muted">Viernes y Sábado</dt><dd class="font-bold text-right">5:30 PM – 2:30 AM</dd>
+                            </dl>
+                            <div class="mt-auto pt-6 flex flex-wrap gap-3">
+                                <a href="#menu" data-show-branch="san-pedro" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-5 py-3 rounded-full transition-colors duration-200">Ver menú San Pedro</a>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Av.+Lic.+Benito+Juárez+418+San+Juan+52104+San+Mateo+Atenco" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 border border-line hover:border-gold hover:text-gold font-bold px-5 py-3 rounded-full transition-colors duration-200">
+                                    <i class="fa-solid fa-diamond-turn-right" aria-hidden="true"></i> Cómo llegar
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- MENÚ (unificado con selector de sucursal) -->
+        <section id="menu" class="py-20 md:py-28 bg-surface/40 border-y border-line">
+            <div class="max-w-6xl mx-auto px-4 md:px-6">
+                <div class="reveal flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                    <div class="max-w-2xl">
+                        <p class="text-gold font-bold tracking-[0.2em] uppercase text-sm mb-3">La carta</p>
+                        <h2 class="font-display font-bold text-4xl md:text-5xl">Nuestro menú</h2>
+                        <p class="mt-4 text-muted text-lg">Ingredientes frescos y recetas tradicionales. Elige tu sucursal:</p>
+                    </div>
+                    <div role="tablist" aria-label="Sucursal" class="relative inline-flex self-start md:self-auto p-1 bg-ink border border-line rounded-full">
+                        <span id="tab-pill" class="absolute top-1 bottom-1 left-0 rounded-full bg-primary" aria-hidden="true"></span>
+                        <button role="tab" id="tab-guadalupe" data-branch="guadalupe" aria-selected="true" aria-controls="menu-panel" class="branch-tab relative min-h-[44px] px-5 rounded-full font-bold transition-colors duration-200 cursor-pointer">Guadalupe</button>
+                        <button role="tab" id="tab-san-pedro" data-branch="san-pedro" aria-selected="false" aria-controls="menu-panel" tabindex="-1" class="branch-tab relative min-h-[44px] px-5 rounded-full font-bold transition-colors duration-200 cursor-pointer">San Pedro</button>
+                    </div>
+                </div>
+
+                <!-- Atajos de categoría -->
+                <nav aria-label="Categorías del menú" class="sticky top-[84px] z-30 -mx-4 px-4 md:mx-0 md:px-2 mb-8 bg-ink/90 backdrop-blur md:rounded-2xl">
+                    <ul id="category-chips" class="no-scrollbar flex gap-2 overflow-x-auto py-2"></ul>
+                </nav>
+
+                <!-- Destacado -->
+                <div class="reveal grid md:grid-cols-[1.1fr_1fr] gap-6 items-center bg-gradient-to-br from-primary to-primary-dark rounded-3xl p-6 md:p-10 mb-10 overflow-hidden">
+                    <div>
+                        <span class="inline-block text-xs font-bold uppercase tracking-widest bg-ink/30 text-white px-3 py-1 rounded-full">La especialidad de la casa</span>
+                        <h3 class="mt-4 font-display font-black text-4xl md:text-5xl text-white">Taco al Pastor</h3>
+                        <p class="mt-3 text-white/90 text-lg max-w-md">Carne de cerdo marinada, servida con piña, cilantro y cebolla. Directo del trompo a tu mesa.</p>
+                        <p class="mt-5 font-display font-bold text-5xl text-white">$20</p>
+                    </div>
+                    <img src="https://res.cloudinary.com/dcusstbid/image/upload/e_background_removal/f_png/v1752271561/photo_2023-12-18_04-57-42-removebg-preview_2_spelgc.png" alt="Orden de tacos al pastor de Tacos del Sur" loading="lazy" class="w-full max-w-sm mx-auto drop-shadow-2xl">
+                </div>
+
+                <p id="branch-note" class="hidden mb-6 flex items-start gap-3 bg-ink border border-line rounded-2xl px-4 py-3 text-muted">
+                    <i class="fa-solid fa-circle-info text-gold mt-1" aria-hidden="true"></i>
+                    <span>En la sucursal San Pedro, por el momento solo ofrecemos refrescos en bebidas. ¡Gracias por tu comprensión!</span>
+                </p>
+
+                <div id="menu-panel" role="tabpanel" aria-labelledby="tab-guadalupe" class="columns-1 md:columns-2 lg:columns-3 gap-6"></div>
+            </div>
+        </section>
+
+        <!-- SERVICIOS -->
+        <section id="servicios" class="py-20 md:py-28 grain">
+            <div class="max-w-6xl mx-auto px-4 md:px-6">
+                <div class="reveal max-w-2xl mb-12">
+                    <p class="text-gold font-bold tracking-[0.2em] uppercase text-sm mb-3">Llevamos el sabor</p>
+                    <h2 class="font-display font-bold text-4xl md:text-5xl">Servicios especiales</h2>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <a href="https://wa.me/5217227618491?text=Hola!%20Me%20interesa%20el%20servicio%20a%20domicilio." target="_blank" rel="noopener noreferrer"
+                       class="reveal group flex flex-col bg-surface border border-line hover:border-gold rounded-3xl p-8 transition-colors duration-200 cursor-pointer">
+                        <span class="grid place-items-center w-14 h-14 rounded-2xl bg-primary text-white text-2xl"><i class="fa-solid fa-motorcycle" aria-hidden="true"></i></span>
+                        <h3 class="mt-6 font-display font-bold text-3xl">Servicio a domicilio</h3>
+                        <p class="mt-3 text-muted text-lg">Tus tacos calientitos hasta la puerta de tu casa. Haz tu pedido por WhatsApp.</p>
+                        <span class="mt-6 inline-flex items-center gap-2 font-bold text-gold">Pedir por WhatsApp <i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true"></i></span>
+                    </a>
+                    <a href="https://wa.me/5217227618491?text=Hola!%20Me%20interesa%20contratar%20para%20un%20evento." target="_blank" rel="noopener noreferrer"
+                       class="reveal group flex flex-col bg-surface border border-line hover:border-gold rounded-3xl p-8 transition-colors duration-200 cursor-pointer">
+                        <span class="grid place-items-center w-14 h-14 rounded-2xl bg-gold text-ink text-2xl"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
+                        <h3 class="mt-6 font-display font-bold text-3xl">Eventos y catering</h3>
+                        <p class="mt-3 text-muted text-lg">Llevamos el trompo a tu fiesta, cumpleaños o reunión. Cotiza sin compromiso.</p>
+                        <span class="mt-6 inline-flex items-center gap-2 font-bold text-gold">Cotizar mi evento <i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true"></i></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALERÍA -->
+        <section id="galeria" class="py-20 md:py-28 bg-surface/40 border-t border-line">
+            <div class="max-w-6xl mx-auto px-4 md:px-6">
+                <div class="reveal max-w-2xl mb-12">
+                    <p class="text-gold font-bold tracking-[0.2em] uppercase text-sm mb-3">Galería</p>
+                    <h2 class="font-display font-bold text-4xl md:text-5xl">Un vistazo a la taquería</h2>
+                    <p class="mt-4 text-muted text-lg">Nuestro ambiente y los platillos que te esperan.</p>
+                </div>
+                <div id="gallery" class="grid grid-cols-2 md:grid-cols-4 auto-rows-[160px] md:auto-rows-[200px] gap-3 md:gap-4"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 bg-ink/80 border-t border-line">
+        <div class="picado" aria-hidden="true"></div>
+        <div class="max-w-6xl mx-auto px-4 md:px-6 py-12 grid md:grid-cols-3 gap-8 items-start">
+            <div>
+                <p class="font-display font-bold text-2xl">Tacos del Sur</p>
+                <p class="mt-2 text-muted">Tacos al pastor con tradición familiar en San Mateo Atenco.</p>
+            </div>
+            <div>
+                <p class="font-bold mb-3">Síguenos</p>
+                <div class="flex gap-3">
+                    <a href="https://www.facebook.com/share/19bHuXexvV/?mibextid=qi2Omg" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="grid place-items-center w-11 h-11 rounded-full bg-surface border border-line hover:border-gold hover:text-gold transition-colors duration-200"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="https://www.instagram.com/tacos.del.sur_fts?igsh=dms1dGZzOW0zbWhi" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="grid place-items-center w-11 h-11 rounded-full bg-surface border border-line hover:border-gold hover:text-gold transition-colors duration-200"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://wa.me/5217227618491" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="grid place-items-center w-11 h-11 rounded-full bg-surface border border-line hover:border-gold hover:text-gold transition-colors duration-200"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="text-muted text-sm md:text-right">
+                <p>&copy; <span id="year">2025</span> Tacos del Sur.</p>
+                <p>Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón flotante WhatsApp -->
+    <a href="https://wa.me/5217227618491?text=Hola!%20Me%20interesa%20el%20servicio%20a%20domicilio." target="_blank" rel="noopener noreferrer"
+       aria-label="Pedir a domicilio por WhatsApp"
+       class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 grid place-items-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#25D366] hover:bg-[#1EBE5A] text-white text-3xl shadow-lg shadow-black/40 transition-colors duration-200">
+        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+    </a>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="hidden fixed inset-0 z-[70] bg-black/90 items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+        <button id="lb-close" type="button" aria-label="Cerrar" class="absolute top-4 right-4 grid place-items-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-xl cursor-pointer transition-colors duration-200"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <button id="lb-prev" type="button" aria-label="Imagen anterior" class="absolute left-3 md:left-6 grid place-items-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer transition-colors duration-200"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <figure id="lb-figure" class="max-w-5xl max-h-full flex flex-col items-center">
+            <img id="lb-img" src="" alt="" class="max-h-[80vh] w-auto rounded-xl">
+            <figcaption id="lb-caption" class="mt-3 text-muted text-sm"></figcaption>
+        </figure>
+        <button id="lb-next" type="button" aria-label="Imagen siguiente" class="absolute right-3 md:right-6 grid place-items-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer transition-colors duration-200"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+    </div>
+
+    <script src="assets/motion.js" defer></script>
+    <script src="assets/data-rain.js" defer></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // ---------- Motion (sucesor de Framer Motion), compilado en assets/motion.js ----------
+        const M = window.TacosMotion;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const motionOn = !!M && !reduceMotion;
+        if (!motionOn) document.documentElement.classList.remove('js-motion');
+        // Entradas con resorte; salidas cortas con ease para no hacer esperar
+        const SPRING = motionOn ? { type: M.spring, visualDuration: 0.5, bounce: 0.18 } : {};
+        const EXIT = { duration: 0.16, ease: [0.4, 0, 1, 1] };
+
+        // ---------- Navegación ----------
+        const navShell = document.getElementById('nav-shell');
+        const onScroll = () => {
+            const solid = window.scrollY > 40;
+            navShell.classList.toggle('bg-ink/90', solid);
+            navShell.classList.toggle('backdrop-blur', solid);
+            navShell.classList.toggle('border-line', solid);
+            navShell.classList.toggle('shadow-lg', solid);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        const menuBtn = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+        let menuOpen = false;
+        let menuToken = 0;
+        const setMobileMenu = async (open) => {
+            const token = ++menuToken;
+            menuOpen = open;
+            menuBtn.setAttribute('aria-expanded', String(open));
+            menuBtn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+            menuBtn.querySelector('i').className = open ? 'fa-solid fa-xmark text-xl' : 'fa-solid fa-bars text-xl';
+            document.body.style.overflow = open ? 'hidden' : '';
+            if (open) {
+                mobileMenu.classList.remove('hidden');
+                if (motionOn) {
+                    M.animate(mobileMenu, { opacity: [0, 1] }, { duration: 0.2 });
+                    M.animate(mobileLinks, { opacity: [0, 1], y: [24, 0] }, { ...SPRING, delay: M.stagger(0.05, { startDelay: 0.05 }) });
+                }
+                return;
+            }
+            if (motionOn && !mobileMenu.classList.contains('hidden')) await M.animate(mobileMenu, { opacity: 0 }, EXIT);
+            if (token === menuToken) mobileMenu.classList.add('hidden');
+        };
+        menuBtn.addEventListener('click', () => setMobileMenu(!menuOpen));
+        document.querySelectorAll('.mobile-nav-link').forEach(l => l.addEventListener('click', () => setMobileMenu(false)));
+
+        // ---------- Horarios y estado "abierto ahora" (hora de CDMX) ----------
+        // Cada día (0 = domingo): [apertura, cierre] en minutos; el cierre puede pasar de 24h.
+        const HOURS = {
+            'guadalupe': { 0: [960, 1380], 1: [960, 1380], 2: [960, 1380], 3: null, 4: [960, 1380], 5: [960, 1380], 6: [960, 1380] },
+            'san-pedro': { 0: [1050, 1530], 1: [1050, 1530], 2: [1050, 1530], 3: [1050, 1530], 4: [1050, 1530], 5: [1050, 1590], 6: [1050, 1590] }
+        };
+        const fmt = (m) => {
+            m = m % 1440;
+            const h = Math.floor(m / 60), min = m % 60;
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            return `${((h + 11) % 12) + 1}:${String(min).padStart(2, '0')} ${ampm}`;
+        };
+        function mexicoNow() {
+            const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Mexico_City', weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: false }).formatToParts(new Date());
+            const get = (t) => parts.find(p => p.type === t).value;
+            const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday'));
+            return { day, mins: (parseInt(get('hour'), 10) % 24) * 60 + parseInt(get('minute'), 10) };
+        }
+        function branchStatus(branch) {
+            const { day, mins } = mexicoNow();
+            const sched = HOURS[branch];
+            const yesterday = sched[(day + 6) % 7];
+            if (yesterday && yesterday[1] > 1440 && mins < yesterday[1] - 1440) {
+                return { open: true, text: `Abierto · cierra a las ${fmt(yesterday[1])}` };
+            }
+            const today = sched[day];
+            if (today && mins >= today[0] && mins < today[1]) {
+                return { open: true, text: `Abierto · cierra a las ${fmt(today[1])}` };
+            }
+            if (today && mins < today[0]) return { open: false, text: `Cerrado · abre hoy a las ${fmt(today[0])}` };
+            for (let i = 1; i <= 7; i++) {
+                const next = sched[(day + i) % 7];
+                if (next) return { open: false, text: `Cerrado · abre ${i === 1 ? 'mañana' : 'el ' + ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'][(day + i) % 7]} a las ${fmt(next[0])}` };
+            }
+        }
+        function renderStatus() {
+            ['guadalupe', 'san-pedro'].forEach(b => {
+                const s = branchStatus(b);
+                document.querySelectorAll(`.status-text[data-branch="${b}"]`).forEach(el => el.textContent = s.text);
+                document.querySelectorAll(`.status-dot[data-branch="${b}"]`).forEach(el => {
+                    el.classList.toggle('bg-green-400', s.open);
+                    el.classList.toggle('bg-salsa', !s.open);
+                    el.classList.remove('bg-muted');
+                });
+                document.querySelectorAll(`.status-badge[data-branch="${b}"]`).forEach(el => {
+                    el.textContent = s.open ? 'Abierto ahora' : 'Cerrado';
+                    el.className = 'status-badge shrink-0 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full ' +
+                        (s.open ? 'bg-green-500/15 text-green-400' : 'bg-primary/15 text-salsa');
+                });
+            });
+        }
+        renderStatus();
+        setInterval(renderStatus, 60000);
+
+        // ---------- Menú ----------
+        const MENU = [
+            { category: 'Tacos', icon: 'fa-fire-flame-curved', items: [
+                { name: 'Al Pastor', price: 20, description: 'Nuestra especialidad. Carne de cerdo marinada, servida con piña, cilantro y cebolla.' },
+                { name: 'Bistec', price: 30, description: 'Jugoso bistec de res a la plancha.' },
+                { name: 'Chuleta', price: 20, description: 'Jugosa chuleta de cerdo en trozos.' },
+                { name: 'Arrachera', price: 50, description: 'Tierna arrachera marinada y cocinada a la perfección.' },
+                { name: 'Con queso', price: '+$10', description: 'Añade queso derretido a tu taco favorito.' }
+            ]},
+            { category: 'Suizos', icon: 'fa-cheese', note: 'Taco con tortilla de harina, con queso y la carne.', items: [
+                { name: 'Pastor', price: 40 }, { name: 'Bistec', price: 50 }, { name: 'Chuleta', price: 40 }, { name: 'Arrachera', price: 80 }
+            ]},
+            { category: 'Gringas y Tortas', icon: 'fa-bread-slice', note: 'Gringa o torta, tú eliges.', items: [
+                { name: 'Pastor', price: 75 }, { name: 'Chuleta', price: 75 }, { name: 'Bistec', price: 90 }, { name: 'Arrachera', price: 160 }
+            ]},
+            { category: 'Alambres', icon: 'fa-pepper-hot', note: 'Preparado con queso, pimiento morrón, cebolla y tocino.', items: [
+                { name: 'Pastor o Chuleta', price: 150 }, { name: 'Bistec', price: 200 }
+            ]},
+            { category: 'Costras', icon: 'fa-layer-group', note: 'Tu carne envuelta en una crujiente costra de queso.', items: [
+                { name: 'Pastor', price: 45 }, { name: 'Chuleta', price: 45 }, { name: 'Bistec', price: 55 }, { name: 'Arrachera', price: 90 }
+            ]},
+            { category: 'Volcanes', icon: 'fa-volcano', note: '¡Explosión de sabor! Tostada de maíz crujiente con queso gratinado y tu carne favorita.', items: [
+                { name: 'Pastor', price: 30 }, { name: 'Chuleta', price: 30 }, { name: 'Bistec', price: 40 }, { name: 'Arrachera', price: 60 }
+            ]},
+            { category: 'Bebidas', icon: 'fa-mug-hot', items: [
+                { name: 'Refrescos', price: 25, description: 'Pepsi, Seven Up, Sangría, Manzanita, Boing (mango y guayaba).', branches: ['guadalupe', 'san-pedro'] },
+                { name: 'Café', price: 35, description: 'Café de grano de Oaxaca de especialidad.' },
+                { name: 'Carajillo 43', price: 135, description: 'Café espresso con un toque de Licor 43.' },
+                { name: 'Carajillo de brandy o ron', price: 170, description: 'Café espresso con brandy o ron.' },
+                { name: 'Cerveza nacional', price: 'Preguntar', description: 'Pregunta por nuestra selección de cervezas.' },
+                { name: 'Bebidas de temporada', price: 'Preguntar', description: 'Disfruta de nuestras bebidas especiales de temporada.' }
+            ]}
+        ];
+        // Por defecto un platillo está en ambas sucursales; las bebidas sin `branches` solo en Guadalupe.
+        const available = (cat, item, branch) =>
+            item.branches ? item.branches.includes(branch) : (cat.category !== 'Bebidas' || branch === 'guadalupe');
+        const priceLabel = (p) => typeof p === 'number' ? `$${p}` : p;
+        const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-');
+
+        const panel = document.getElementById('menu-panel');
+        const chips = document.getElementById('category-chips');
+        const tabs = document.querySelectorAll('.branch-tab');
+        const branchNote = document.getElementById('branch-note');
+
+        const pill = document.getElementById('tab-pill');
+        let currentBranch = null;
+
+        function renderPanel(branch) {
+            panel.innerHTML = MENU.map(cat => {
+                const items = cat.items.filter(i => available(cat, i, branch));
+                return `
+                <article id="cat-${slug(cat.category)}" class="break-inside-avoid mb-6 bg-ink border border-line rounded-3xl p-6 scroll-mt-40">
+                    <header class="flex items-center gap-3 mb-1">
+                        <span class="grid place-items-center w-10 h-10 rounded-xl bg-primary/15 text-salsa"><i class="fa-solid ${cat.icon}" aria-hidden="true"></i></span>
+                        <h3 class="font-display font-bold text-2xl">${cat.category}</h3>
+                    </header>
+                    ${cat.note ? `<p class="text-muted text-sm mt-2">${cat.note}</p>` : ''}
+                    <ul class="mt-4 divide-y divide-line">
+                        ${items.map(i => `
+                        <li class="py-3">
+                            <div class="flex items-baseline">
+                                <span class="font-bold text-lg">${i.name}</span>
+                                <span class="leader" aria-hidden="true"></span>
+                                <span class="font-display font-bold text-xl text-gold whitespace-nowrap">${priceLabel(i.price)}</span>
+                            </div>
+                            ${i.description ? `<p class="text-muted text-sm mt-1">${i.description}</p>` : ''}
+                        </li>`).join('')}
+                    </ul>
+                </article>`;
+            }).join('');
+
+            const showNote = branch === 'san-pedro';
+            branchNote.classList.toggle('hidden', !showNote);
+            branchNote.classList.toggle('flex', showNote);
+            if (showNote && motionOn) M.animate(branchNote, { opacity: [0, 1], y: [-8, 0] }, SPRING);
+        }
+
+        // Indicador que se desliza detrás de la pestaña activa
+        function movePill(animated) {
+            const tab = [...tabs].find(t => t.dataset.branch === currentBranch);
+            if (!tab) return;
+            const target = { x: tab.offsetLeft, width: `${tab.offsetWidth}px` };
+            if (motionOn) {
+                M.animate(pill, target, animated ? SPRING : { duration: 0 });
+            } else {
+                pill.style.transform = `translateX(${target.x}px)`;
+                pill.style.width = target.width;
+            }
+        }
+
+        function setActiveTab(branch, animated) {
+            currentBranch = branch;
+            tabs.forEach(t => {
+                const active = t.dataset.branch === branch;
+                t.setAttribute('aria-selected', String(active));
+                t.tabIndex = active ? 0 : -1;
+                t.classList.toggle('text-white', active);
+                t.classList.toggle('text-muted', !active);
+                t.classList.toggle('hover:text-cream', !active);
+                if (active) panel.setAttribute('aria-labelledby', t.id);
+            });
+            movePill(animated);
+        }
+
+        // Cambio de sucursal: la carta actual sale, la nueva entra escalonada
+        let switchToken = 0;
+        async function switchBranch(branch) {
+            if (branch === currentBranch) return;
+            const token = ++switchToken;
+            setActiveTab(branch, true);
+            if (motionOn && panel.classList.contains('is-shown')) {
+                await M.animate(panel.children, { opacity: 0, y: -10 }, { ...EXIT, delay: M.stagger(0.02) });
+                if (token !== switchToken) return;
+            }
+            renderPanel(branch);
+            if (motionOn) {
+                panel.classList.add('is-shown');
+                M.animate(panel.children, { opacity: [0, 1], y: [18, 0] }, { ...SPRING, delay: M.stagger(0.05) });
+            }
+        }
+
+        tabs.forEach((t, idx) => {
+            t.addEventListener('click', () => switchBranch(t.dataset.branch));
+            t.addEventListener('keydown', (e) => {
+                if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+                const next = tabs[(idx + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+                next.focus();
+                switchBranch(next.dataset.branch);
+            });
+        });
+        document.querySelectorAll('[data-show-branch]').forEach(a =>
+            a.addEventListener('click', () => switchBranch(a.dataset.showBranch)));
+
+        chips.innerHTML = MENU.map(cat => `
+            <li><a href="#cat-${slug(cat.category)}" class="inline-flex items-center gap-2 whitespace-nowrap min-h-[40px] px-4 rounded-full bg-ink/90 backdrop-blur border border-line hover:border-gold hover:text-gold text-sm font-bold transition-colors duration-200">
+                <i class="fa-solid ${cat.icon} text-salsa" aria-hidden="true"></i>${cat.category}</a></li>`).join('');
+        setActiveTab('guadalupe', false);
+        renderPanel('guadalupe');
+        // El ancho de las pestañas cambia al cargar la fuente y al redimensionar
+        if (document.fonts) document.fonts.ready.then(() => movePill(false));
+        window.addEventListener('resize', () => movePill(false));
+
+        // ---------- Galería + lightbox ----------
+        const CDN = 'https://res.cloudinary.com/dcusstbid/image/upload/';
+        const PHOTOS = [
+            { src: 'v1752209724/20250501_225004_geglpc.jpg', alt: 'Trompo de carne al pastor', span: 'col-span-2 row-span-2' },
+            { src: 'v1752206189/20250429_000945_nhmjbb.jpg', alt: 'Platillo recién servido', span: 'row-span-2' },
+            { src: 'v1752207865/20250501_231626_qlhfrr.jpg', alt: 'Bebida de la casa', span: '' },
+            { src: 'v1752209568/20250710_223931_zmmurb.jpg', alt: 'Interior de la taquería', span: '' },
+            { src: 'c_crop,ar_3:4/v1752212324/20250501_230353_bijuhm.jpg', alt: 'Orden de tacos', span: 'row-span-2' },
+            { src: 'v1752209568/20250617_204238_admndu.jpg', alt: 'Detalle decorativo de la taquería', span: '' },
+            { src: 'v1752211721/as_oeto4e.jpg', alt: 'Clientes disfrutando en la taquería', span: 'col-span-2' },
+            { src: 'v1752206165/IMG-20250422-WA0025_pq3xko.jpg', alt: 'Especialidad de la casa', span: '' }
+        ];
+        const url = (src, w) => CDN + `f_auto,q_auto,w_${w}/` + src;
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = PHOTOS.map((p, i) => `
+            <button type="button" data-index="${i}" class="group relative overflow-hidden rounded-2xl bg-raised cursor-pointer ${p.span}" aria-label="Ampliar: ${p.alt}">
+                <img src="${url(p.src, 800)}" alt="${p.alt}" loading="lazy" class="w-full h-full object-cover transition-opacity duration-200 group-hover:opacity-80">
+                <span class="absolute inset-x-0 bottom-0 p-3 text-left text-sm font-bold bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200">${p.alt}</span>
+            </button>`).join('');
+
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lb-img');
+        const lbCaption = document.getElementById('lb-caption');
+        let current = 0, lastFocus = null, lbToken = 0;
+        const preloaded = new Set();
+        const preload = (i) => {
+            const src = url(PHOTOS[(i + PHOTOS.length) % PHOTOS.length].src, 1600);
+            if (preloaded.has(src)) return;
+            preloaded.add(src);
+            new Image().src = src;
+        };
+        const show = (i) => {
+            current = (i + PHOTOS.length) % PHOTOS.length;
+            lbImg.src = url(PHOTOS[current].src, 1600);
+            lbImg.alt = PHOTOS[current].alt;
+            lbCaption.textContent = `${PHOTOS[current].alt} · ${current + 1} de ${PHOTOS.length}`;
+            preload(current + 1);
+            preload(current - 1);
+        };
+        // Espera a que la foto esté lista, pero no más de 350 ms: si la red es lenta, entra y termina de cargar a la vista
+        const imageReady = () => Promise.race([
+            lbImg.decode().catch(() => {}),
+            new Promise(r => setTimeout(r, 350))
+        ]);
+        // Desplazamiento y escala que llevan la imagen ampliada a su miniatura (técnica FLIP)
+        const offsetToTile = (i) => {
+            const from = gallery.querySelector(`button[data-index="${i}"]`).getBoundingClientRect();
+            const to = lbImg.getBoundingClientRect();
+            if (!from.width || !to.width) return null;
+            return {
+                x: from.left + from.width / 2 - (to.left + to.width / 2),
+                y: from.top + from.height / 2 - (to.top + to.height / 2),
+                scale: from.width / to.width
+            };
+        };
+        const openLb = async (i) => {
+            const token = ++lbToken;
+            lastFocus = document.activeElement;
+            show(i);
+            lb.classList.remove('hidden'); lb.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('lb-close').focus();
+            if (!motionOn) return;
+            M.animate(lbImg, { opacity: 0 }, { duration: 0 });
+            M.animate(lb, { opacity: [0, 1] }, { duration: 0.25 });
+            await imageReady();
+            if (token !== lbToken) return;
+            const from = offsetToTile(current);
+            M.animate(lbImg, from
+                ? { opacity: [0.4, 1], x: [from.x, 0], y: [from.y, 0], scale: [from.scale, 1] }
+                : { opacity: [0, 1], scale: [0.94, 1] }, SPRING);
+            M.animate(lbCaption, { opacity: [0, 1] }, { duration: 0.3, delay: 0.15 });
+        };
+        const closeLb = async () => {
+            const token = ++lbToken;
+            if (motionOn) {
+                const to = offsetToTile(current);
+                const anims = [M.animate(lb, { opacity: 0 }, { duration: 0.28 })];
+                if (to) anims.push(M.animate(lbImg, { x: to.x, y: to.y, scale: to.scale }, { duration: 0.28, ease: [0.4, 0, 0.2, 1] }));
+                await Promise.all(anims);
+                if (token !== lbToken) return;
+                M.animate(lbImg, { x: 0, y: 0, scale: 1 }, { duration: 0 });
+            }
+            lb.classList.add('hidden'); lb.classList.remove('flex');
+            document.body.style.overflow = '';
+            if (lastFocus) lastFocus.focus();
+        };
+        // Siguiente/anterior: la foto sale hacia un lado y la nueva entra desde el otro
+        const step = async (dir) => {
+            const token = ++lbToken;
+            if (!motionOn) return show(current + dir);
+            await M.animate(lbImg, { opacity: 0, x: -dir * 48 }, EXIT);
+            if (token !== lbToken) return;
+            show(current + dir);
+            await imageReady();
+            if (token !== lbToken) return;
+            M.animate(lbImg, { opacity: [0, 1], x: [dir * 48, 0] }, SPRING);
+        };
+        gallery.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-index]');
+            if (btn) openLb(Number(btn.dataset.index));
+        });
+        document.getElementById('lb-close').addEventListener('click', closeLb);
+        document.getElementById('lb-prev').addEventListener('click', () => step(-1));
+        document.getElementById('lb-next').addEventListener('click', () => step(1));
+        lb.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+        document.addEventListener('keydown', (e) => {
+            if (!lb.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeLb();
+                if (e.key === 'ArrowLeft') step(-1);
+                if (e.key === 'ArrowRight') step(1);
+            } else if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+                setMobileMenu(false);
+            }
+        });
+
+        // ---------- Transiciones de entrada y de scroll ----------
+        if (motionOn) {
+            // Lo que entra a la vista en el mismo cuadro se anima junto, escalonado
+            let batch = [];
+            const flushReveal = () => {
+                M.animate(batch, { opacity: [0, 1], y: [28, 0] }, { ...SPRING, delay: M.stagger(0.08) });
+                batch = [];
+            };
+            M.inView('.reveal', (el) => {
+                if (!batch.length) requestAnimationFrame(flushReveal);
+                batch.push(el);
+            }, { amount: 0.2 });
+
+            // Contenedores generados por JS: sus hijos entran escalonados la primera vez
+            const revealChildren = (container, from) => M.inView(container, () => {
+                if (container.classList.contains('is-shown')) return;
+                container.classList.add('is-shown');
+                M.animate(container.children, from, { ...SPRING, delay: M.stagger(0.06) });
+            }, { amount: 0.1 });
+            revealChildren(panel, { opacity: [0, 1], y: [24, 0] });
+            revealChildren(gallery, { opacity: [0, 1], scale: [0.92, 1] });
+
+            // Portada: el contenido sube y se desvanece al salir, enlazando con Sucursales
+            M.scroll(
+                M.animate('#hero-content', { y: [0, -90], opacity: [1, 0] }, { ease: 'linear' }),
+                { target: document.getElementById('inicio'), offset: ['start start', 'end start'] }
+            );
+
+            // Barra de progreso de lectura
+            M.scroll(M.animate('#scroll-progress', { scaleX: [0, 1] }, { ease: 'linear' }));
+        }
+    });
+    </script>
+</body>
+</html>
