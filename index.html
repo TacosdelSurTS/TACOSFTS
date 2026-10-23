@@ -73,7 +73,7 @@
         }
 
         /* Foto semitransparente que se desvanece hacia abajo para dejar ver el fondo animado */
-        .hero-bg { isolation: isolate; }
+        /* Sin `isolation` para que el trompo 3D (z -1 en <main>) quede entre esta foto y el texto */
         .hero-bg::before {
             content: "";
             position: absolute;
@@ -225,6 +225,9 @@
                 </ul>
             </div>
         </section>
+
+        <!-- Trompo 3D que gira con el scroll (compilado desde ../app con `npm run build:embed`) -->
+        <div id="trompo-3d" class="fixed top-0 right-0 z-[-1] h-[100dvh] w-[75vw] translate-x-[30%] opacity-35 md:w-[48vw] md:translate-x-[10%] md:opacity-75 lg:w-[38vw] lg:translate-x-0 lg:opacity-100 pointer-events-none" aria-hidden="true"></div>
 
         <div class="picado" aria-hidden="true"></div>
 
@@ -442,6 +445,7 @@
 
     <script src="assets/motion.js" defer></script>
     <script src="assets/data-rain.js" defer></script>
+    <script src="assets/trompo.js" defer></script>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
