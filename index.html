@@ -199,6 +199,7 @@
                 <a href="#sucursales" class="px-3 py-2 rounded-lg text-muted hover:text-cream hover:bg-white/5 transition-colors duration-200">Sucursales</a>
                 <a href="#menu" class="px-3 py-2 rounded-lg text-muted hover:text-cream hover:bg-white/5 transition-colors duration-200">Menú</a>
                 <a href="#servicios" class="px-3 py-2 rounded-lg text-muted hover:text-cream hover:bg-white/5 transition-colors duration-200">Servicios</a>
+                <a href="#pago" class="px-3 py-2 rounded-lg text-muted hover:text-cream hover:bg-white/5 transition-colors duration-200">Pagos</a>
                 <a href="#galeria" class="px-3 py-2 rounded-lg text-muted hover:text-cream hover:bg-white/5 transition-colors duration-200">Galería</a>
                 <a href="https://wa.me/5217227618491?text=Hola!%20Quiero%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer" class="ml-2 inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-4 py-2 rounded-full transition-colors duration-200">
                     <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Pedir ahora
@@ -216,6 +217,7 @@
             <a href="#sucursales" class="mobile-nav-link w-full max-w-xs text-center text-2xl font-display py-3 rounded-xl hover:bg-white/5">Sucursales</a>
             <a href="#menu" class="mobile-nav-link w-full max-w-xs text-center text-2xl font-display py-3 rounded-xl hover:bg-white/5">Menú</a>
             <a href="#servicios" class="mobile-nav-link w-full max-w-xs text-center text-2xl font-display py-3 rounded-xl hover:bg-white/5">Servicios</a>
+            <a href="#pago" class="mobile-nav-link w-full max-w-xs text-center text-2xl font-display py-3 rounded-xl hover:bg-white/5">Pagos</a>
             <a href="#galeria" class="mobile-nav-link w-full max-w-xs text-center text-2xl font-display py-3 rounded-xl hover:bg-white/5">Galería</a>
             <a href="https://wa.me/5217227618491?text=Hola!%20Quiero%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer" class="mobile-nav-link mt-6 inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-full">
                 <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Pedir por WhatsApp
@@ -421,6 +423,51 @@
                         <p class="mt-2 md:mt-3 text-muted md:text-lg">Llevamos el trompo a tu fiesta, cumpleaños o reunión. Cotiza sin compromiso.</p>
                         <span class="mt-4 md:mt-6 inline-flex items-center gap-2 font-bold text-gold">Cotizar mi evento <i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true"></i></span>
                     </a>
+                </div>
+
+                <!-- Pago por transferencia -->
+                <div id="pago" class="reveal mt-4 md:mt-6 scroll-mt-28 grid md:grid-cols-[1fr_auto] gap-6 md:gap-10 items-center bg-surface border border-line rounded-3xl p-5 md:p-8">
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <span class="grid place-items-center w-11 h-11 md:w-14 md:h-14 rounded-2xl bg-primary/15 text-salsa text-xl md:text-2xl"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></span>
+                            <h3 class="font-display font-bold text-2xl md:text-3xl">Paga por transferencia</h3>
+                        </div>
+                        <ol class="mt-4 md:mt-6 grid sm:grid-cols-2 gap-4 md:gap-6">
+                            <li class="bg-ink border border-line rounded-2xl p-4 md:p-5">
+                                <p class="text-gold font-bold text-xs md:text-sm uppercase tracking-[0.15em]">Paso 1</p>
+                                <p class="font-bold md:text-lg mt-1">Realiza tu transferencia</p>
+                                <dl class="mt-3 space-y-1.5 text-sm md:text-base">
+                                    <div><dt class="text-muted text-xs uppercase tracking-wider">CLABE</dt>
+                                        <dd class="flex flex-wrap items-center gap-2">
+                                            <span id="clabe" class="font-bold text-lg md:text-xl tabular-nums tracking-wide whitespace-nowrap">012 180 01596933470 7</span>
+                                            <button id="copy-clabe" type="button" class="press inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full border border-line hover:border-gold hover:text-gold text-xs font-bold transition-colors duration-200 cursor-pointer">
+                                                <i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copiar</span>
+                                            </button>
+                                        </dd></div>
+                                    <div class="flex gap-2"><dt class="text-muted">Banco:</dt><dd class="font-bold">BBVA</dd></div>
+                                    <div class="flex gap-2"><dt class="text-muted">Titular:</dt><dd class="font-bold">Abraham Torres</dd></div>
+                                    <div class="flex gap-2"><dt class="text-muted">Concepto:</dt><dd class="font-bold">Tacos</dd></div>
+                                </dl>
+                            </li>
+                            <li class="flex flex-col bg-ink border border-line rounded-2xl p-4 md:p-5">
+                                <p class="text-gold font-bold text-xs md:text-sm uppercase tracking-[0.15em]">Paso 2</p>
+                                <p class="font-bold md:text-lg mt-1">Envía tu comprobante</p>
+                                <ul class="mt-3 space-y-1.5 text-sm md:text-base text-muted">
+                                    <li class="flex gap-2"><i class="fa-solid fa-check text-gold mt-1" aria-hidden="true"></i> Envía tu comprobante de pago por WhatsApp</li>
+                                    <li class="flex gap-2"><i class="fa-solid fa-check text-gold mt-1" aria-hidden="true"></i> Agrega tu nombre y tu pedido</li>
+                                </ul>
+                                <a href="https://wa.me/5217227894631?text=Hola!%20Env%C3%ADo%20mi%20comprobante%20de%20transferencia." target="_blank" rel="noopener noreferrer" class="press mt-4 md:mt-auto self-start inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-5 py-3 rounded-full transition-colors duration-200">
+                                    <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i> ¡Ir a WhatsApp!
+                                </a>
+                            </li>
+                        </ol>
+                    </div>
+                    <figure class="hidden md:flex flex-col items-center gap-3">
+                        <div class="w-44 lg:w-52 p-3 bg-cream rounded-2xl ring-4 ring-gold/80">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 41" shape-rendering="crispEdges" class="block w-full h-auto" role="img" aria-label="Código QR para enviar tu comprobante por WhatsApp"><path fill="#140C0A" d="M0 0h7v1h-7zM8 0h1v1h-1zM10 0h5v1h-5zM19 0h1v1h-1zM22 0h3v1h-3zM28 0h1v1h-1zM31 0h2v1h-2zM34 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h2v1h-2zM12 1h1v1h-1zM14 1h1v1h-1zM17 1h1v1h-1zM20 1h4v1h-4zM26 1h1v1h-1zM28 1h1v1h-1zM34 1h1v1h-1zM40 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM11 2h1v1h-1zM15 2h2v1h-2zM18 2h1v1h-1zM21 2h3v1h-3zM25 2h2v1h-2zM28 2h1v1h-1zM30 2h3v1h-3zM34 2h1v1h-1zM36 2h3v1h-3zM40 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h2v1h-2zM12 3h1v1h-1zM18 3h1v1h-1zM21 3h2v1h-2zM24 3h1v1h-1zM27 3h3v1h-3zM31 3h1v1h-1zM34 3h1v1h-1zM36 3h3v1h-3zM40 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM12 4h2v1h-2zM15 4h5v1h-5zM23 4h3v1h-3zM27 4h1v1h-1zM29 4h1v1h-1zM31 4h1v1h-1zM34 4h1v1h-1zM36 4h3v1h-3zM40 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM12 5h5v1h-5zM18 5h2v1h-2zM21 5h2v1h-2zM24 5h1v1h-1zM26 5h1v1h-1zM28 5h5v1h-5zM34 5h1v1h-1zM40 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM32 6h1v1h-1zM34 6h7v1h-7zM8 7h3v1h-3zM12 7h6v1h-6zM23 7h2v1h-2zM27 7h1v1h-1zM29 7h3v1h-3zM0 8h1v1h-1zM2 8h2v1h-2zM5 8h3v1h-3zM9 8h2v1h-2zM13 8h1v1h-1zM15 8h1v1h-1zM17 8h1v1h-1zM19 8h4v1h-4zM24 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM34 8h1v1h-1zM37 8h1v1h-1zM39 8h2v1h-2zM0 9h1v1h-1zM3 9h1v1h-1zM5 9h1v1h-1zM7 9h2v1h-2zM10 9h3v1h-3zM14 9h1v1h-1zM16 9h2v1h-2zM19 9h1v1h-1zM21 9h4v1h-4zM26 9h1v1h-1zM29 9h4v1h-4zM34 9h1v1h-1zM36 9h1v1h-1zM38 9h3v1h-3zM2 10h3v1h-3zM6 10h3v1h-3zM10 10h1v1h-1zM12 10h1v1h-1zM14 10h2v1h-2zM18 10h1v1h-1zM21 10h1v1h-1zM23 10h2v1h-2zM26 10h1v1h-1zM28 10h3v1h-3zM33 10h1v1h-1zM35 10h2v1h-2zM38 10h2v1h-2zM1 11h2v1h-2zM8 11h3v1h-3zM15 11h2v1h-2zM18 11h2v1h-2zM23 11h3v1h-3zM32 11h3v1h-3zM39 11h2v1h-2zM0 12h1v1h-1zM2 12h1v1h-1zM6 12h1v1h-1zM8 12h2v1h-2zM11 12h1v1h-1zM13 12h1v1h-1zM17 12h3v1h-3zM26 12h2v1h-2zM29 12h1v1h-1zM31 12h1v1h-1zM35 12h1v1h-1zM37 12h3v1h-3zM1 13h5v1h-5zM10 13h1v1h-1zM12 13h3v1h-3zM17 13h1v1h-1zM22 13h2v1h-2zM25 13h2v1h-2zM28 13h2v1h-2zM31 13h1v1h-1zM33 13h2v1h-2zM37 13h1v1h-1zM40 13h1v1h-1zM1 14h2v1h-2zM5 14h3v1h-3zM9 14h4v1h-4zM15 14h2v1h-2zM22 14h1v1h-1zM24 14h1v1h-1zM26 14h3v1h-3zM31 14h1v1h-1zM34 14h1v1h-1zM38 14h3v1h-3zM1 15h1v1h-1zM3 15h1v1h-1zM10 15h1v1h-1zM12 15h1v1h-1zM14 15h1v1h-1zM18 15h4v1h-4zM24 15h1v1h-1zM28 15h1v1h-1zM30 15h3v1h-3zM34 15h1v1h-1zM37 15h1v1h-1zM39 15h1v1h-1zM1 16h10v1h-10zM12 16h2v1h-2zM16 16h1v1h-1zM18 16h2v1h-2zM21 16h5v1h-5zM27 16h1v1h-1zM30 16h3v1h-3zM36 16h2v1h-2zM0 17h1v1h-1zM2 17h1v1h-1zM5 17h1v1h-1zM11 17h1v1h-1zM13 17h1v1h-1zM15 17h1v1h-1zM17 17h2v1h-2zM22 17h2v1h-2zM26 17h2v1h-2zM29 17h2v1h-2zM32 17h2v1h-2zM35 17h1v1h-1zM38 17h2v1h-2zM2 18h6v1h-6zM9 18h1v1h-1zM11 18h3v1h-3zM16 18h2v1h-2zM20 18h2v1h-2zM25 18h3v1h-3zM30 18h1v1h-1zM32 18h1v1h-1zM36 18h2v1h-2zM39 18h1v1h-1zM2 19h3v1h-3zM7 19h1v1h-1zM9 19h1v1h-1zM13 19h1v1h-1zM22 19h6v1h-6zM29 19h3v1h-3zM35 19h1v1h-1zM37 19h3v1h-3zM0 20h3v1h-3zM5 20h2v1h-2zM15 20h1v1h-1zM18 20h2v1h-2zM22 20h1v1h-1zM25 20h2v1h-2zM29 20h2v1h-2zM34 20h1v1h-1zM36 20h3v1h-3zM40 20h1v1h-1zM0 21h2v1h-2zM3 21h1v1h-1zM7 21h1v1h-1zM10 21h1v1h-1zM14 21h1v1h-1zM18 21h1v1h-1zM20 21h5v1h-5zM30 21h3v1h-3zM34 21h7v1h-7zM1 22h1v1h-1zM3 22h4v1h-4zM10 22h2v1h-2zM15 22h1v1h-1zM18 22h1v1h-1zM21 22h1v1h-1zM23 22h1v1h-1zM28 22h2v1h-2zM32 22h1v1h-1zM35 22h2v1h-2zM39 22h1v1h-1zM5 23h1v1h-1zM8 23h5v1h-5zM19 23h1v1h-1zM22 23h5v1h-5zM30 23h2v1h-2zM34 23h2v1h-2zM40 23h1v1h-1zM0 24h1v1h-1zM2 24h1v1h-1zM5 24h2v1h-2zM9 24h1v1h-1zM13 24h1v1h-1zM17 24h2v1h-2zM20 24h1v1h-1zM25 24h1v1h-1zM27 24h1v1h-1zM29 24h3v1h-3zM35 24h1v1h-1zM37 24h2v1h-2zM40 24h1v1h-1zM1 25h1v1h-1zM3 25h1v1h-1zM7 25h1v1h-1zM12 25h9v1h-9zM22 25h1v1h-1zM27 25h3v1h-3zM31 25h2v1h-2zM34 25h2v1h-2zM37 25h2v1h-2zM40 25h1v1h-1zM0 26h2v1h-2zM6 26h2v1h-2zM10 26h4v1h-4zM18 26h2v1h-2zM21 26h2v1h-2zM24 26h3v1h-3zM31 26h2v1h-2zM34 26h2v1h-2zM37 26h1v1h-1zM39 26h2v1h-2zM0 27h3v1h-3zM4 27h1v1h-1zM7 27h1v1h-1zM9 27h1v1h-1zM12 27h1v1h-1zM14 27h1v1h-1zM21 27h2v1h-2zM24 27h1v1h-1zM26 27h3v1h-3zM31 27h7v1h-7zM39 27h2v1h-2zM0 28h1v1h-1zM2 28h2v1h-2zM5 28h2v1h-2zM10 28h3v1h-3zM14 28h3v1h-3zM19 28h1v1h-1zM21 28h1v1h-1zM23 28h1v1h-1zM25 28h1v1h-1zM27 28h1v1h-1zM31 28h3v1h-3zM36 28h2v1h-2zM1 29h3v1h-3zM5 29h1v1h-1zM7 29h2v1h-2zM12 29h2v1h-2zM16 29h1v1h-1zM18 29h2v1h-2zM22 29h1v1h-1zM24 29h2v1h-2zM28 29h1v1h-1zM32 29h1v1h-1zM35 29h1v1h-1zM39 29h1v1h-1zM0 30h1v1h-1zM2 30h3v1h-3zM6 30h3v1h-3zM11 30h1v1h-1zM20 30h5v1h-5zM26 30h2v1h-2zM29 30h2v1h-2zM32 30h5v1h-5zM39 30h1v1h-1zM4 31h2v1h-2zM7 31h3v1h-3zM12 31h1v1h-1zM14 31h1v1h-1zM16 31h2v1h-2zM20 31h1v1h-1zM24 31h1v1h-1zM26 31h4v1h-4zM34 31h1v1h-1zM37 31h2v1h-2zM40 31h1v1h-1zM1 32h1v1h-1zM6 32h1v1h-1zM9 32h2v1h-2zM15 32h1v1h-1zM17 32h3v1h-3zM21 32h1v1h-1zM23 32h1v1h-1zM26 32h13v1h-13zM40 32h1v1h-1zM8 33h1v1h-1zM12 33h2v1h-2zM15 33h1v1h-1zM19 33h1v1h-1zM23 33h2v1h-2zM28 33h1v1h-1zM30 33h1v1h-1zM32 33h1v1h-1zM36 33h1v1h-1zM38 33h1v1h-1zM40 33h1v1h-1zM0 34h7v1h-7zM8 34h2v1h-2zM11 34h2v1h-2zM15 34h1v1h-1zM17 34h1v1h-1zM21 34h4v1h-4zM26 34h1v1h-1zM28 34h2v1h-2zM31 34h2v1h-2zM34 34h1v1h-1zM36 34h3v1h-3zM0 35h1v1h-1zM6 35h1v1h-1zM8 35h2v1h-2zM11 35h3v1h-3zM18 35h5v1h-5zM24 35h4v1h-4zM30 35h1v1h-1zM32 35h1v1h-1zM36 35h2v1h-2zM39 35h1v1h-1zM0 36h1v1h-1zM2 36h3v1h-3zM6 36h1v1h-1zM9 36h3v1h-3zM18 36h1v1h-1zM21 36h2v1h-2zM29 36h2v1h-2zM32 36h5v1h-5zM38 36h2v1h-2zM0 37h1v1h-1zM2 37h3v1h-3zM6 37h1v1h-1zM8 37h1v1h-1zM12 37h2v1h-2zM16 37h1v1h-1zM18 37h1v1h-1zM24 37h1v1h-1zM27 37h1v1h-1zM31 37h1v1h-1zM36 37h1v1h-1zM38 37h2v1h-2zM0 38h1v1h-1zM2 38h3v1h-3zM6 38h1v1h-1zM8 38h1v1h-1zM11 38h1v1h-1zM15 38h1v1h-1zM17 38h1v1h-1zM19 38h3v1h-3zM29 38h3v1h-3zM35 38h1v1h-1zM38 38h3v1h-3zM0 39h1v1h-1zM6 39h1v1h-1zM10 39h3v1h-3zM20 39h4v1h-4zM27 39h1v1h-1zM30 39h1v1h-1zM34 39h1v1h-1zM36 39h2v1h-2zM39 39h1v1h-1zM0 40h7v1h-7zM8 40h2v1h-2zM12 40h1v1h-1zM15 40h2v1h-2zM18 40h1v1h-1zM21 40h1v1h-1zM24 40h3v1h-3zM30 40h4v1h-4zM39 40h1v1h-1z"/></svg>
+                        </div>
+                        <figcaption class="text-muted text-sm text-center max-w-[13rem]">Escanéalo con tu celular para abrir WhatsApp</figcaption>
+                    </figure>
                 </div>
             </div>
         </section>
@@ -893,6 +940,20 @@
             } else if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
                 setMobileMenu(false);
             }
+        });
+
+        // ---------- Copiar CLABE ----------
+        const copyBtn = document.getElementById('copy-clabe');
+        copyBtn.addEventListener('click', async () => {
+            const clabe = document.getElementById('clabe').textContent.replace(/\s/g, '');
+            const label = copyBtn.querySelector('span');
+            try {
+                await navigator.clipboard.writeText(clabe);
+                label.textContent = '¡Copiada!';
+            } catch {
+                label.textContent = clabe;
+            }
+            setTimeout(() => { label.textContent = 'Copiar'; }, 2000);
         });
 
         // ---------- Transiciones de entrada y de scroll ----------
